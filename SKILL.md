@@ -1,3 +1,8 @@
+---
+name: trello-oauth
+description: Authenticate to Trello via OAuth 1.0a (3-step flow) from the terminal and run wrapped REST API calls with Python. Use when a user needs to set up Trello access, renew an expired token (every 30 days), check token status, revoke a token, or run Trello API commands (whoami, boards, lists, cards, create/update/move/close cards, create lists).
+---
+
 # trello-oauth
 
 Trello via OAuth 1.0a (flow 3-step) + wrapper REST Python. Token à expiration `30days`, scopes `read,write`. Renouvellement manuel via `--setup` tous les 30 jours. Pas de cron.
@@ -23,17 +28,17 @@ chmod 600 .env
 
 ### Variables `.env`
 
-| Variable | Description | Exemple |
-|---|---|---|
-| `TRELLO_API_KEY` | API key Trello (publique) | `abcdef1234…` |
-| `TRELLO_OAUTH_SECRET` | OAuth secret (= application secret) | `xyz…` |
-| `TRELLO_CALLBACK_PORT` | Port du serveur callback | `8080` |
+| Variable                   | Description                                  | Exemple                                                        |
+| -------------------------- | -------------------------------------------- | -------------------------------------------------------------- |
+| `TRELLO_API_KEY`           | API key Trello (publique)                    | `abcdef1234…`                                                  |
+| `TRELLO_OAUTH_SECRET`      | OAuth secret (= application secret)          | `xyz…`                                                         |
+| `TRELLO_CALLBACK_PORT`     | Port du serveur callback                     | `8080`                                                         |
 | `TRELLO_CALLBACK_BASE_URL` | URL publique joignable depuis ton navigateur | `http://fred-ghilini-thinkcentre-m920q.tail0d634b.ts.net:8080` |
-| `TRELLO_TOKEN_FILE` | Chemin du fichier token | `~/.openclaw/trello_tokens.json` |
-| `TRELLO_TOKEN_FILE_KEY` | Clé AES-GCM optionnelle (base64 32 bytes) | `…` |
-| `TRELLO_TOKEN_SCOPE` | Scopes OAuth | `read,write` |
-| `TRELLO_TOKEN_EXPIRATION` | Durée du token | `30days` |
-| `TRELLO_TOKEN_NAME` | Nom affiché à l'utilisateur | `OpenClaw-fred_claw` |
+| `TRELLO_TOKEN_FILE`        | Chemin du fichier token                      | `~/.openclaw/trello_tokens.json`                               |
+| `TRELLO_TOKEN_FILE_KEY`    | Clé AES-GCM optionnelle (base64 32 bytes)    | `…`                                                            |
+| `TRELLO_TOKEN_SCOPE`       | Scopes OAuth                                 | `read,write`                                                   |
+| `TRELLO_TOKEN_EXPIRATION`  | Durée du token                               | `30days`                                                       |
+| `TRELLO_TOKEN_NAME`        | Nom affiché à l'utilisateur                  | `OpenClaw-fred_claw`                                           |
 
 ## Authentification
 
@@ -42,6 +47,7 @@ chmod 600 .env
 ```
 
 Le flow :
+
 1. Lance un serveur HTTP local sur `TRELLO_CALLBACK_PORT`
 2. `GET /1/OAuthGetRequestToken` → reçoit request token
 3. Construit l'URL authorize : `scope=read,write&expiration=30days`
@@ -115,14 +121,14 @@ Timeout `exec` recommandé : **5 minutes** (`timeout=300`). Le serveur s'arrête
 
 ## Gestion des erreurs
 
-| Erreur | Action |
-|---|---|
-| `401 unauthorized` | Token expiré → relancer `--setup` |
-| `invalid key` / `invalid token` | Mauvaise `TRELLO_API_KEY` ou `TRELLO_OAUTH_SECRET` |
-| Port 8080 occupé | Changer `TRELLO_CALLBACK_PORT` ou tuer le process (`lsof -i :8080`) |
-| DNS Tailscale injoignable | Vérifier que le tailnet est actif |
-| Fichier chiffré mais pas de clé | Définir `TRELLO_TOKEN_FILE_KEY` dans `.env` |
-| Timeout pendant le `--setup` | Tu n'as pas cliqué Allow dans les 5 minutes → relancer |
+| Erreur                          | Action                                                              |
+| ------------------------------- | ------------------------------------------------------------------- |
+| `401 unauthorized`              | Token expiré → relancer `--setup`                                   |
+| `invalid key` / `invalid token` | Mauvaise `TRELLO_API_KEY` ou `TRELLO_OAUTH_SECRET`                  |
+| Port 8080 occupé                | Changer `TRELLO_CALLBACK_PORT` ou tuer le process (`lsof -i :8080`) |
+| DNS Tailscale injoignable       | Vérifier que le tailnet est actif                                   |
+| Fichier chiffré mais pas de clé | Définir `TRELLO_TOKEN_FILE_KEY` dans `.env`                         |
+| Timeout pendant le `--setup`    | Tu n'as pas cliqué Allow dans les 5 minutes → relancer              |
 
 ## Structure
 
@@ -162,3 +168,4 @@ Couvre : `token_store` (chiffré / clair / clé manquante), `oauth_flow` (parsin
 
 - [Trello REST API — Authorization](https://developer.atlassian.com/cloud/trello/guides/rest-api/authorization/)
 - [OAuth 1.0a RFC 5849](https://datatracker.ietf.org/doc/html/rfc5849)
+
