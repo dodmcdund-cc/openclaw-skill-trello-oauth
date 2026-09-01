@@ -89,7 +89,7 @@ Les autres ont des défauts raisonnables.
 
 ## Différence avec `twg trello`
 
-Le CLI `twg trello` est cassé pour l'identité OpenClaw `fghilini-claw` (cf. `TOOLS.md`). Ce skill contourne le problème en utilisant directement REST avec un token OAuth 1.0a utilisateur-owned (compte `fred_claw`).
+En attendant que Trello supporte pleinement OAuth 2.1 ainsi que le CLI `twg` (ce qui ne manquera pas d'arriver!), voici un skill intermédiaire fonctionnant avec le pattern OAuth 1.0a de Trello.
 
 ## Tests
 
